@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wedding Documentation | Gus Baqir & Ning Imah</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Poppins:wght@300;400;600&display=swap');
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            overflow-x: hidden;
+            color: #2d3748;
+        }
+        
+        .title-font {
+            font-family: 'Playfair Display', serif;
+        }
+        
+        .hero-section {
+            height: 100vh;
+            position: relative;
+        }
+        
+        .floating {
+            animation: floating 3s ease-in-out infinite;
+        }
+        
+        @keyframes floating {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        .gallery-item {
+            transition: all 0.3s ease;
+        }
+        
+        .gallery-item:hover {
+            transform: scale(1.03);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+        
+        .video-thumbnail::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(59, 130, 246, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 4rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .video-thumbnail:hover::after {
+            opacity: 1;
+            content: '▶';
+        }
+        
+        .tab-active {
+            border-bottom: 3px solid #3b82f6;
+            color: #3b82f6;
+            font-weight: 600;
+        }
+        
+        .modal-video {
+            width: 80vw;
+            max-width: 1000px;
+            height: 80vh;
+            max-height: 600px;
+        }
+        
+        .timeline-item:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            left: 7px;
+            top: 24px;
+            height: 100%;
+            width: 2px;
+            background: #e2e8f0;
+        }
+
+        /* Romantic Elements */
+        .heart {
+            position: absolute;
+            pointer-events: none;
+            animation: float 6s ease-in-out infinite;
+            opacity: 0.8;
+            z-index: 5;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0) rotate(0deg) scale(1); opacity: 0.8; }
+            50% { transform: translateY(-100px) rotate(180deg) scale(1.2); opacity: 1; }
+            100% { transform: translateY(-200px) rotate(360deg) scale(0.8); opacity: 0; }
+        }
+
+        .parallax-element {
+            transition: transform 0.3s ease-out;
+        }
+
+        .love-bubble {
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background: rgba(255, 105, 180, 0.6);
+            animation: bubble-float 8s linear infinite;
+            z-index: 1;
+        }
+
+        @keyframes bubble-float {
+            0% { transform: translateY(0) translateX(0) scale(0.5); opacity: 0; }
+            10% { opacity: 0.8; }
+            90% { opacity: 0.8; }
+            100% { transform: translateY(-100vh) translateX(20px) scale(1.5); opacity: 0; }
+        }
+
+        .floating-hearts {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        .ring-particle {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: gold;
+            box-shadow: 0 0 10px gold;
+            animation: ring-sparkle 2s ease-out infinite;
+        }
+
+        @keyframes ring-sparkle {
+            0% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(3); opacity: 0; }
+        }
+    </style>
+</head>
+<body class="bg-blue-50">
+    <!-- Romantic Background Animation -->
+    <div id="vanta-bg" class="fixed top-0 left-0 w-full h-full z-0"></div>
+    
+    <!-- Floating Hearts Container -->
+    <div class="floating-hearts" id="hearts-container"></div>
+    
+    <!-- Hero Section -->
+    <section class="hero-section flex items-center justify-center relative z-10">
+        <div class="absolute top-0 left-0 w-full h-full bg-blue-900 opacity-70"></div>
+        
+        <div class="text-center px-4 relative z-20 parallax-element" data-speed="0.3">
+            <div class="mb-8">
+                <p class="text-blue-100 text-lg md:text-xl mb-2">Wedding Documentation of</p>
+                <h1 class="title-font text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-4">
+                    <span class="inline-block floating">Gus Baqir</span> 
+                    <span class="text-pink-300 mx-4">&</span> 
+                    <span class="inline-block floating" style="animation-delay: 0.5s;">Ning Imah</span>
+                </h1>
+                <p class="text-blue-100 text-lg md:text-xl">18 Dzul Qo'dah 1446 H / 16 Mei 2025</p>
+                <p class="text-blue-100 text-lg md:text-xl">Created by Beddian Media</p>
+            </div>
+            
+            <div class="mt-12">
+                <a href="#gallery" class="inline-block bg-pink-500 hover:bg-pink-600 text-white px-6 py-3 rounded-full border border-pink-300 transition-all duration-300 transform hover:scale-105 shadow-lg">
+                    <i class="fas fa-images mr-2"></i> View Gallery
+                </a>
+            </div>
+            
+            <div class="absolute bottom-8 left-0 w-full text-center">
+                <a href="#story" class="text-white animate-bounce inline-block">
+                    <i class="fas fa-chevron-down text-2xl"></i>
+                </a>
+            </div>
+        </div>
+
+        <!-- Ring Sparkles -->
+        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-30" id="ring-sparkles"></div>
+    </section>
+    
+    <!-- Wedding Story Section -->
+    <section id="story" class="py-20 px-4 relative z-10 bg-white">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16 parallax-element" data-speed="0.1">
+                <h2 class="title-font text-3xl md:text-4xl font-bold text-blue-800 mb-4">Our Love Story</h2>
+                <div class="w-24 h-1 bg-pink-400 mx-auto mb-6"></div>
+                <p class="max-w-2xl mx-auto text-gray-600">A journey that began with a glance and led to forever</p>
+            </div>
+            
+            <div class="relative">
+                <!-- Siraman -->
+                <div class="timeline-item relative pl-8 pb-12 parallax-element" data-speed="0.15">
+                    <div class="absolute left-0 top-0 w-4 h-4 rounded-full bg-pink-500 border-4 border-pink-200"></div>
+                    <div class="bg-pink-50 p-6 rounded-xl shadow-lg">
+                        <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-4">
+                            <h3 class="title-font text-xl font-bold text-blue-800">Rabu Malam Kamis</h3>
+                            <span class="text-pink-600 font-medium">07:00 - 08:00 WIS</span>
+                        </div>
+                        <p class="text-gray-600">Walimatul Urs yang dihadiri oleh alumni dan simpatisan Muslimat Pesantren Salafiyah Al-Utsmani.</p>
+                    </div>
+                </div>
+                
+                <!-- Akad Nikah -->
+                <div class="timeline-item relative pl-8 pb-12 parallax-element" data-speed="0.2">
+                    <div class="absolute left-0 top-0 w-4 h-4 rounded-full bg-pink-500 border-4 border-pink-200"></div>
+                    <div class="bg-pink-50 p-6 rounded-xl shadow-lg">
+                        <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-4">
+                            <h3 class="title-font text-xl font-bold text-blue-800">Jumat Siang</h3>
+                            <span class="text-pink-600 font-medium">03:00 - 05:00 WIS</span>
+                        </div>
+                        <p class="text-gray-600">Walimatus Urs Akbar, dihadiri oleh ratusan Masyayikh, ribuan alumni, wali santri dan simpatisan Pesantren Salafiyah Al-Utsmani.</p>
+                    </div>
+                </div>
+                
+                <!-- Photo Session -->
+                <div class="timeline-item relative pl-8 pb-12 parallax-element" data-speed="0.25">
+                    <div class="absolute left-0 top-0 w-4 h-4 rounded-full bg-pink-500 border-4 border-pink-200"></div>
+                    <div class="bg-pink-50 p-6 rounded-xl shadow-lg">
+                        <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-4">
+                            <h3 class="title-font text-xl font-bold text-blue-800">Jumat Malam Sabtu</h3>
+                            <span class="text-pink-600 font-medium">07.00 - 08:00 WIS</span>
+                        </div>
+                        <p class="text-gray-600">Walimatus Urs Akbar, dihadiri oleh Masyayikh dan ribuan tamu undangan Gus Baqir.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Floating Love Bubbles -->
+        <div class="absolute inset-0 overflow-hidden pointer-events-none">
+            <div id="love-bubbles"></div>
+        </div>
+    </section>
+    
+    <!-- Gallery Section -->
+    <section id="gallery" class="py-20 px-4 relative z-10 bg-blue-50">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-12 parallax-element" data-speed="0.1">
+                <h2 class="title-font text-3xl md:text-4xl font-bold text-blue-800 mb-4">Our Wedding Gallery</h2>
+                <div class="w-24 h-1 bg-pink-400 mx-auto mb-6"></div>
+                <p class="max-w-2xl mx-auto text-gray-600">Relive the beautiful moments from our special day</p>
+            </div>
+            
+            <!-- Gallery Tabs -->
+            <div class="flex justify-center mb-12 border-b border-gray-200 parallax-element" data-speed="0.15">
+                <button class="tab-btn px-6 py-3 text-lg font-medium text-gray-500 hover:text-pink-600" data-tab="photos">Photos</button>
+                <button class="tab-btn px-6 py-3 text-lg font-medium text-gray-500 hover:text-pink-600" data-tab="videos">Videos</button>
+                <button class="tab-btn px-6 py-3 text-lg font-medium text-gray-500 hover:text-pink-600" data-tab="moments">Special Moments</button>
+            </div>
+            
+            <!-- Photos Gallery -->
+            <div id="photos-tab" class="gallery-tab active">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 parallax-element" data-speed="0.2">
+                    <div class="gallery-item rounded-xl overflow-hidden shadow-md bg-white transform hover:rotate-1 transition-all duration-300">
+                        <img src="https://i.ibb.co/0jq6YzL/wedding1.jpg" alt="Wedding photo" class="w-full h-64 object-cover">
+                        <div class="p-4">
+                            <h3 class="font-bold text-blue-800 mb-2">Akad Nikah Moment</h3>
+                            <p class="text-gray-600 text-sm">The sacred moment of our marriage contract</p>
+                        </div>
+                    </div>
+                    <div class="gallery-item rounded-xl overflow-hidden shadow-md bg-white transform hover:-rotate-1 transition-all duration-300">
+                        <img src="https://i.ibb.co/0jq6YzL/wedding2.jpg" alt="Wedding photo" class="w-full h-64 object-cover">
+                        <div class="p-4">
+                            <h3 class="font-bold text-blue-800 mb-2">First Look</h3>
+                            <p class="text-gray-600 text-sm">Our first moment seeing each other on wedding day</p>
+                        </div>
+                    </div>
+                    <div class="gallery-item rounded-xl overflow-hidden shadow-md bg-white transform hover:rotate-1 transition-all duration-300">
+                        <img src="https://i.ibb.co/0jq6YzL/wedding3.jpg" alt="Wedding photo" class="w-full h-64 object-cover">
+                        <div class="p-4">
+                            <h3 class="font-bold text-blue-800 mb-2">Family Portrait</h3>
+                            <p class="text-gray-600 text-sm">With both of our beloved families</p>
+                        </div>
+                    </div>
+                    <div class="gallery-item rounded-xl overflow-hidden shadow-md bg-white transform hover:-rotate-1 transition-all duration-300">
+                        <img src="https://i.ibb.co/0jq6YzL/wedding4.jpg" alt="Wedding photo" class="w-full h-64 object-cover">
+                        <div class="p-4">
+                            <h3 class="font-bold text-blue-800 mb-2">Traditional Ceremony</h3>
+                            <p class="text-gray-600 text-sm">Javanese wedding traditions</p>
+                        </div>
+                    </div>
+                    <div class="gallery-item rounded-xl overflow-hidden shadow-md bg-white transform hover:rotate-1 transition-all duration-300">
+                        <img src="https://i.ibb.co/0jq6YzL/wedding5.jpg" alt="Wedding photo" class="w-full h-64 object-cover">
+                        <div class="p-4">
+                            <h3 class="font-bold text-blue-800 mb-2">Reception Entrance</h3>
+                            <p class="text-gray-600 text-sm">Making our grand entrance as husband and wife</p>
+                        </div>
+                    </div>
+                    <div class="gallery-item rounded-xl overflow-hidden shadow-md bg-white transform hover:-rotate-1 transition-all duration-300">
+                        <img src="https://i.ibb.co/0jq6YzL/wedding6.jpg" alt="Wedding photo" class="w-full h-64 object-cover">
+                        <div class="p-4">
+                            <h3 class="font-bold text-blue-800 mb-2">Candle Light Dinner</h3>
+                            <p class="text-gray-600 text-sm">Romantic dinner after the reception</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!--
+                <div class="text-center mt-12 parallax-element" data-speed="0.1">
+                    <button class="bg-pink-500 hover:bg-pink-600 text-white px-8 py-3 rounded-full shadow-lg transition-all duration-300 transform hover:scale-105">
+                        <i class="fas fa-images mr-2"></i> Load More Photos
+                    </button>
+                </div>
+            -->
+            </div>
+            
+            <!-- Videos Gallery -->
+            <div id="videos-tab" class="gallery-tab hidden">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="gallery-item rounded-xl overflow-hidden shadow-md bg-white video-thumbnail cursor-pointer" data-video="https://www.youtube.com/embed/dQw4w9WgXcQ">
+                        <img src="https://i.ibb.co/0jq6YzL/video1.jpg" alt="Wedding video" class="w-full h-64 object-cover">
+                        <div class="p-4">
+                            <h3 class="font-bold text-blue-800 mb-2">Wedding Highlights</h3>
+                            <p class="text-gray-600 text-sm">3:45 min • Our wedding day summary</p>
+                        </div>
+                    </div>
+                    <div class="gallery-item rounded-xl overflow-hidden shadow-md bg-white video-thumbnail cursor-pointer" data-video="https://www.youtube.com/embed/dQw4w9WgXcQ">
+                        <img src="https://i.ibb.co/0jq6YzL/video2.jpg" alt="Wedding video" class="w-full h-64 object-cover">
+                        <div class="p-4">
+                            <h3 class="font-bold text-blue-800 mb-2">Akad Nikah Full</h3>
+                            <p class="text-gray-600 text-sm">12:32 min • Complete marriage ceremony</p>
+                        </div>
+                    </div>
+                    <div class="gallery-item rounded-xl overflow-hidden shadow-md bg-white video-thumbnail cursor-pointer" data-video="https://www.youtube.com/embed/dQw4w9WgXcQ">
+                        <img src="https://i.ibb.co/0jq6YzL/video3.jpg" alt="Wedding video" class="w-full h-64 object-cover">
+                        <div class="p-4">
+                            <h3 class="font-bold text-blue-800 mb-2">Siraman Ceremony</h3>
+                            <p class="text-gray-600 text-sm">8:15 min • Traditional Javanese ritual</p>
+                        </div>
+                    </div>
+                    <div class="gallery-item rounded-xl overflow-hidden shadow-md bg-white video-thumbnail cursor-pointer" data-video="https://www.youtube.com/embed/dQw4w9WgXcQ">
+                        <img src="https://i.ibb.co/0jq6YzL/video4.jpg" alt="Wedding video" class="w-full h-64 object-cover">
+                        <div class="p-4">
+                            <h3 class="font-bold text-blue-800 mb-2">Reception Moments</h3>
+                            <p class="text-gray-600 text-sm">6:22 min • Celebrating with guests</p>
+                        </div>
+                    </div>
+                    <div class="gallery-item rounded-xl overflow-hidden shadow-md bg-white video-thumbnail cursor-pointer" data-video="https://www.youtube.com/embed/dQw4w9WgXcQ">
+                        <img src="https://i.ibb.co/0jq6YzL/video5.jpg" alt="Wedding video" class="w-full h-64 object-cover">
+                        <div class="p-4">
+                            <h3 class="font-bold text-blue-800 mb-2">Couple Interview</h3>
+                            <p class="text-gray-600 text-sm">4:56 min • Our thoughts on wedding day</p>
+                        </div>
+                    </div>
+                    <div class="gallery-item rounded-xl overflow-hidden shadow-md bg-white video-thumbnail cursor-pointer" data-video="https://www.youtube.com/embed/dQw4w9WgXcQ">
+                        <img src="https://i.ibb.co/0jq6YzL/video6.jpg" alt="Wedding video" class="w-full h-64 object-cover">
+                        <div class="p-4">
+                            <h3 class="font-bold text-blue-800 mb-2">Guest Messages</h3>
+                            <p class="text-gray-600 text-sm">7:18 min • Wishes from family & friends</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!--
+                <div class="text-center mt-12">
+                    <button class="bg-pink-500 hover:bg-pink-600 text-white px-8 py-3 rounded-full shadow-lg transition-all duration-300 transform hover:scale-105">
+                        <i class="fas fa-video mr-2"></i> Load More Videos
+                    </button>
+                </div>
+            -->
+            </div>
+            
+            <!-- Special Moments Gallery -->
+            <div id="moments-tab" class="gallery-tab hidden">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="gallery-item rounded-xl overflow-hidden shadow-md bg-white">
+                        <img src="https://i.ibb.co/0jq6YzL/moment1.jpg" alt="Special moment" class="w-full h-64 object-cover">
+                        <div class="p-4">
+                            <h3 class="font-bold text-blue-800 mb-2">First Kiss</h3>
+                            <p class="text-gray-600 text-sm">Our first kiss as husband and wife</p>
+                        </div>
+                    </div>
+                    <div class="gallery-item rounded-xl overflow-hidden shadow-md bg-white">
+                        <img src="https://i.ibb.co/0jq6YzL/moment2.jpg" alt="Special moment" class="w-full h-64 object-cover">
+                        <div class="p-4">
+                            <h3 class="font-bold text-blue-800 mb-2">Cake Cutting</h3>
+                            <p class="text-gray-600 text-sm">Sweet moment cutting our wedding cake</p>
+                        </div>
+                    </div>
+                    <div class="gallery-item rounded-xl overflow-hidden shadow-md bg-white">
+                        <img src="https://i.ibb.co/0jq6YzL/moment3.jpg" alt="Special moment" class="w-full h-64 object-cover">
+                        <div class="p-4">
+                            <h3 class="font-bold text-blue-800 mb-2">Parent's Blessing</h3>
+                            <p class="text-gray-600 text-sm">Emotional moment with our parents</p>
+                        </div>
+                    </div>
+                    <div class="gallery-item rounded-xl overflow-hidden shadow-md bg-white">
+                        <img src="https://i.ibb.co/0jq6YzL/moment4.jpg" alt="Special moment" class="w-full h-64 object-cover">
+                        <div class="p-4">
+                            <h3 class="font-bold text-blue-800 mb-2">Bride's Entrance</h3>
+                            <p class="text-gray-600 text-sm">Ning Imah's grand entrance</p>
+                        </div>
+                    </div>
+                    <div class="gallery-item rounded-xl overflow-hidden shadow-md bg-white">
+                        <img src="https://i.ibb.co/0jq6YzL/moment5.jpg" alt="Special moment" class="w-full h-64 object-cover">
+                        <div class="p-4">
+                            <h3 class="font-bold text-blue-800 mb-2">Groom's Reaction</h3>
+                            <p class="text-gray-600 text-sm">Gus Baqir seeing his bride for the first time</p>
+                        </div>
+                    </div>
+                    <div class="gallery-item rounded-xl overflow-hidden shadow-md bg-white">
+                        <img src="https://i.ibb.co/0jq6YzL/moment6.jpg" alt="Special moment" class="w-full h-64 object-cover">
+                        <div class="p-4">
+                            <h3 class="font-bold text-blue-800 mb-2">Final Dance</h3>
+                            <p class="text-gray-600 text-sm">Our last dance as the reception ended</p>
+                        </div>
+                    </div>
+                </div>
+                <!--
+                <div class="text-center mt-12">
+                    <button class="bg-pink-500 hover:bg-pink-600 text-white px-8 py-3 rounded-full shadow-lg transition-all duration-300 transform hover:scale-105">
+                        <i class="fas fa-heart mr-2"></i> Load More Moments
+                    </button>
+                </div>
+            -->
+            </div>
+        </div>
+    </section>
+    
+    <!-- Video Modal -->
+    <div id="video-modal" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 hidden">
+        <div class="relative">
+            <button id="close-video" class="absolute -top-12 right-0 text-white text-3xl">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="modal-video bg-black rounded-lg overflow-hidden">
+                <iframe id="video-frame" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    <footer class="py-12 px-4 bg-blue-900 text-white relative z-10">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-8">
+                <h2 class="title-font text-2xl md:text-3xl font-bold mb-4">Gus Baqir & Ning Imah</h2>
+                <p class="mb-4">18 Dzul Qo'dah 1446 H / 16 Mei 2025</p>
+                
+                <div class="flex justify-center space-x-6 mb-8">
+                    <a href="#" class="text-white hover:text-pink-300"><i class="fab fa-instagram text-xl"></i></a>
+                    <a href="#" class="text-white hover:text-pink-300"><i class="fab fa-facebook text-xl"></i></a>
+                    <a href="#" class="text-white hover:text-pink-300"><i class="fab fa-youtube text-xl"></i></a>
+                </div>
+            </div>
+            
+            <div class="text-center pt-8 border-t border-blue-800">
+                <p>&copy; 2025 Wedding Documentation of Gus Baqir & Ning Imah. All rights reserved.</p>
+                <p>Beddian Media IT</p>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Floating Music Player -->
+    <div class="fixed bottom-6 right-6 bg-white p-3 rounded-full shadow-xl z-50 cursor-pointer hover:bg-pink-100 transition-colors duration-300">
+        <i class="fas fa-music text-pink-600 text-xl"></i>
+        <audio id="wedding-music" loop>
+            <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+        </audio>
+    </div>
+    
+    <script>
+        // Initialize Vanta.js background with romantic settings
+        VANTA.NET({
+            el: "#vanta-bg",
+            mouseControls: true,
+            touchControls: true,
+            gyroControls: false,
+            minHeight: 200.00,
+            minWidth: 200.00,
+            scale: 1.00,
+            scaleMobile: 1.00,
+            color: 0xff69b4, // Pink color
+            backgroundColor: 0x1e103a, // Dark purple
+            points: 16.00, // More points for denser network
+            maxDistance: 18.00,
+            spacing: 15.00,
+            showDots: false
+        });
+
+        // Create floating hearts
+        function createHearts() {
+            const container = document.getElementById('hearts-container');
+            const heartCount = 15;
+            
+            for (let i = 0; i < heartCount; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'heart';
+                heart.innerHTML = '<i class="fas fa-heart text-pink-400"></i>';
+                
+                // Random position
+                const left = Math.random() * 100;
+                const top = Math.random() * 100;
+                
+                // Random size
+                const size = 0.5 + Math.random() * 1.5;
+                
+                // Random animation duration
+                const duration = 5 + Math.random() * 10;
+                
+                // Random delay
+                const delay = Math.random() * 5;
+                
+                heart.style.left = `${left}%`;
+                heart.style.top = `${top}%`;
+                heart.style.fontSize = `${size}rem`;
+                heart.style.animationDuration = `${duration}s`;
+                heart.style.animationDelay = `${delay}s`;
+                
+                container.appendChild(heart);
+            }
+        }
+
+        // Create love bubbles
+        function createLoveBubbles() {
+            const container = document.getElementById('love-bubbles');
+            const bubbleCount = 20;
+            
+            for (let i = 0; i < bubbleCount; i++) {
+                const bubble = document.createElement('div');
+                bubble.className = 'love-bubble';
+                
+                // Random position
+                const left = Math.random() * 100;
+                
+                // Random size
+                const size = 5 + Math.random() * 15;
+                
+                // Random animation duration
+                const duration = 5 + Math.random() * 15;
+                
+                // Random delay
+                const delay = Math.random() * 10;
+                
+                bubble.style.left = `${left}%`;
+                bubble.style.width = `${size}px`;
+                bubble.style.height = `${size}px`;
+                bubble.style.animationDuration = `${duration}s`;
+                bubble.style.animationDelay = `${delay}s`;
+                
+                container.appendChild(bubble);
+            }
+        }
+
+        // Create ring sparkles
+        function createRingSparkles() {
+            const container = document.getElementById('ring-sparkles');
+            const sparkleCount = 12;
+            
+            for (let i = 0; i < sparkleCount; i++) {
+                const sparkle = document.createElement('div');
+                sparkle.className = 'ring-particle';
+                
+                // Position in a circle
+                const angle = (i / sparkleCount) * Math.PI * 2;
+                const radius = 40;
+                const x = Math.cos(angle) * radius;
+                const y = Math.sin(angle) * radius;
+                
+                // Random animation delay
+                const delay = Math.random() * 2;
+                
+                sparkle.style.left = `${x}px`;
+                sparkle.style.top = `${y}px`;
+                sparkle.style.animationDelay = `${delay}s`;
+                
+                container.appendChild(sparkle);
+            }
+        }
+
+        // Parallax effect
+        function setupParallax() {
+            const elements = document.querySelectorAll('.parallax-element');
+            
+            window.addEventListener('scroll', function() {
+                const scrollPosition = window.pageYOffset;
+                
+                elements.forEach(element => {
+                    const speed = parseFloat(element.getAttribute('data-speed'));
+                    const yPos = -(scrollPosition * speed);
+                    element.style.transform = `translateY(${yPos}px)`;
+                });
+            });
+        }
+
+        // Gallery Tabs
+        const tabBtns = document.querySelectorAll('.tab-btn');
+        const galleryTabs = document.querySelectorAll('.gallery-tab');
+        
+        tabBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                // Remove active class from all buttons and tabs
+                tabBtns.forEach(b => b.classList.remove('tab-active'));
+                galleryTabs.forEach(tab => tab.classList.add('hidden'));
+                
+                // Add active class to clicked button
+                this.classList.add('tab-active');
+                
+                // Show corresponding tab
+                const tabId = this.getAttribute('data-tab') + '-tab';
+                document.getElementById(tabId).classList.remove('hidden');
+            });
+        });
+        
+        // Set first tab as active by default
+        tabBtns[0].classList.add('tab-active');
+        
+        // Video Modal
+        const videoThumbnails = document.querySelectorAll('.video-thumbnail');
+        const videoModal = document.getElementById('video-modal');
+        const videoFrame = document.getElementById('video-frame');
+        const closeVideo = document.getElementById('close-video');
+        
+        videoThumbnails.forEach(thumb => {
+            thumb.addEventListener('click', function() {
+                const videoUrl = this.getAttribute('data-video') + '?autoplay=1';
+                videoFrame.setAttribute('src', videoUrl);
+                videoModal.classList.remove('hidden');
+                document.body.style.overflow = 'hidden';
+            });
+        });
+        
+        closeVideo.addEventListener('click', function() {
+            videoFrame.setAttribute('src', '');
+            videoModal.classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        });
+        
+        // Music player
+        const musicPlayer = document.querySelector('.fa-music').parentElement;
+        const audio = document.getElementById('wedding-music');
+        let isPlaying = false;
+        
+        musicPlayer.addEventListener('click', function() {
+            if (isPlaying) {
+                audio.pause();
+                musicPlayer.innerHTML = '<i class="fas fa-music text-pink-600 text-xl"></i>';
+            } else {
+                audio.play();
+                musicPlayer.innerHTML = '<i class="fas fa-pause text-pink-600 text-xl"></i>';
+            }
+            isPlaying = !isPlaying;
+        });
+        
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Initialize romantic elements
+        window.addEventListener('load', function() {
+            createHearts();
+            createLoveBubbles();
+            createRingSparkles();
+            setupParallax();
+        });
+    </script>
+</body>
+</html>
